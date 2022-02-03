@@ -137,13 +137,16 @@ public:
 	}
 	void start_engine()
 	{
-		if (tank.get_fuel_level())engine.start();
-		control.engine_idle_thread = std::thread(&Car::engine_idle, this);
+		if (tank.get_fuel_level())
+		{
+			engine.start();
+			control.engine_idle_thread = std::thread(&Car::engine_idle, this);
+		}
 	}
 	void stop_engine()
 	{
 		engine.stop();
-		control.engine_idle_thread.join();
+		if(control.engine_idle_thread.joinable())control.engine_idle_thread.join();
 	}
 	void get_in()
 	{
@@ -153,7 +156,7 @@ public:
 	void get_out()
 	{
 		driver_inside = false;
-		control.panel_thread.join();//Останавливаем выполнение потока panel_thread
+		if(control.panel_thread.joinable())control.panel_thread.join();//Останавливаем выполнение потока panel_thread
 		system("CLS");
 		cout << "You are out of a car" << endl;
 	}
@@ -182,7 +185,8 @@ public:
 				else start_engine();
 				break;
 			case Escape:
-				if(control.panel_thread.joinable())get_out();
+				stop_engine();
+				get_out();
 				break;
 			}
 		} while (key != 27);
@@ -199,7 +203,15 @@ public:
 		while (driver_inside)
 		{
 			system("CLS");
-			cout << "Fuel Level: " << tank.get_fuel_level() << "  liters.\n";
+			cout << "Fuel Level: " << tank.get_fuel_level() << "  liters.";
+			if (tank.get_fuel_level() < 5)
+			{
+				HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+				SetConsoleTextAttribute(hConsole, 0x0C);//красный
+				cout << "\tLOW FUEL";
+				SetConsoleTextAttribute(hConsole, 0x07);//обычный цвет
+			}
+			cout << endl;
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			std::this_thread::sleep_for(1s);
 		}
@@ -233,7 +245,7 @@ void main()
 	engine.info();
 #endif // ENGINE_CHECK
 
-	Car bmw(8, 80);
+	Car bmw(20, 80);
 	cout << "Press Enter to get in" << endl;
 	bmw.control_car();
 
