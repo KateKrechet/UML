@@ -1,5 +1,6 @@
 #include<Windows.h>
 #include<stdio.h>
+#include "resource.h"
 
 const CHAR g_szCLASS_NAME[] = "MyWindowClass";
 CONST CHAR g_szTitle[] = "My first MainWindow";
@@ -16,9 +17,11 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	//wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_FLOWER));
+	//wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_SUN));
+	wc.hIcon = (HICON)LoadImage(hInstance, "umbrella.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE|LR_LOADFROMFILE);
+	wc.hIconSm = (HICON)LoadImage(hInstance, "moon.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE);
+	wc.hCursor = LoadCursor(hInstance, MAKEINTRESOURCE(IDC_CURSOR_SC));
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wc.lpszClassName = g_szCLASS_NAME;
 	wc.lpszMenuName = NULL;

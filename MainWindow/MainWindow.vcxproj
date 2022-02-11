@@ -141,6 +141,19 @@
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="spring_sun_flowers_summer_sunshine_plant_garden_icon_194259.ico" />
+    <Image Include="sunset_sun_sunshine_sunrise_weather_icon_194245.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Terran.cur" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
